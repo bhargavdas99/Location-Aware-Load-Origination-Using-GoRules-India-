@@ -1,0 +1,170 @@
+"""
+seed rule data
+
+Revision ID: e2bad41618ea
+Revises: e87df8b344b7
+Create Date: 2025-12-26 14:52:37.546402
+"""
+
+from typing import Sequence, Union
+from alembic import op
+import sqlalchemy as sa
+
+# revision identifiers, used by Alembic.
+revision: str = "e2bad41618ea"
+down_revision: Union[str, Sequence[str], None] = "e87df8b344b7"
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade() -> None:
+    conn = op.get_bind()
+
+    # -------------------------------------------------
+    # STATE RISK
+    # -------------------------------------------------
+    state_risks = [
+        ("Maharashtra", "LOW"),
+        ("Karnataka", "LOW"),
+        ("Tamil Nadu", "LOW"),
+        ("Delhi", "LOW"),
+        ("Gujarat", "LOW"),
+        ("Telangana", "LOW"),
+        ("Haryana", "LOW"),
+        ("Goa", "LOW"),
+        ("Kerala", "MEDIUM"),
+        ("Andhra Pradesh", "MEDIUM"),
+        ("Punjab", "MEDIUM"),
+        ("West Bengal", "MEDIUM"),
+        ("Rajasthan", "MEDIUM"),
+        ("Madhya Pradesh", "MEDIUM"),
+        ("Bihar", "HIGH"),
+        ("Uttar Pradesh", "HIGH"),
+        ("Jharkhand", "HIGH"),
+        ("Chhattisgarh", "HIGH"),
+        ("Odisha", "HIGH"),
+    ]
+
+    for state, risk in state_risks:
+        conn.execute(
+            sa.text(
+                """
+                INSERT INTO state_risk (state, risk_level)
+                VALUES (:state, :risk)
+                ON CONFLICT (state) DO NOTHING
+                """
+            ),
+            {"state": state, "risk": risk},
+        )
+
+    # -------------------------------------------------
+    # CITY RULES
+    # -------------------------------------------------
+    city_rules = [
+        ("Metro", 20000, 8, "11%"),
+        ("Tier1", 15000, 6, "12%"),
+        ("Tier2", 12000, 5, "13%"),
+        ("Rural", 10000, 3, "15%"),
+    ]
+
+    for tier, min_income, multiplier, rate in city_rules:
+        conn.execute(
+            sa.text(
+                """
+                INSERT INTO city_rules (tier, min_income, multiplier, rate)
+                VALUES (:tier, :min_income, :multiplier, :rate)
+                ON CONFLICT (tier) DO NOTHING
+                """
+            ),
+            {
+                "tier": tier,
+                "min_income": min_income,
+                "multiplier": multiplier,
+                "rate": rate,
+            },
+        )
+
+    # -------------------------------------------------
+    # UNSERVICEABLE PINS
+    # -------------------------------------------------
+    pins = ["000000", "123456", "999999", "110099"]
+
+    for pin in pins:
+        conn.execute(
+            sa.text(
+                """
+                INSERT INTO unserviceable_pins (pin_code)
+                VALUES (:pin)
+                ON CONFLICT (pin_code) DO NOTHING
+                """
+            ),
+            {"pin": pin},
+        )
+
+    # -------------------------------------------------
+    # BUREAU SCORE CONFIG (single row)
+    # -------------------------------------------------
+    conn.execute(
+        sa.text(
+            """
+            INSERT INTO bureau_score_config (
+                base_score,
+                debt_low_threshold, debt_low_bonus,
+                debt_medium_threshold, debt_medium_bonus,
+                debt_high_threshold, debt_high_penalty,
+                emp_long_months, emp_long_bonus,
+                emp_medium_months, emp_medium_bonus,
+                emp_short_months, emp_short_penalty,
+                age_min, age_max, age_bonus,
+                score_min, score_max
+            )
+            VALUES (
+                600,
+                0.2, 150,
+                0.4, 100,
+                0.6, 100,
+                48, 100,
+                24, 50,
+                12, 50,
+                30, 50, 50,
+                300, 900
+            )
+            """
+        )
+    )
+
+    # -------------------------------------------------
+    # RISK LEVEL RULES
+    # -------------------------------------------------
+    risk_level_rules = [
+        ("HIGH", "HIGH", 700, 0.5),
+        ("LOW", "LOW", 800, 0.3),
+    ]
+
+    for risk_level, state_risk, min_score, max_dti in risk_level_rules:
+        conn.execute(
+            sa.text(
+                """
+                INSERT INTO risk_level_rules
+                (risk_level, state_risk, min_credit_score, max_dti_ratio)
+                VALUES (:risk_level, :state_risk, :min_score, :max_dti)
+                """
+            ),
+            {
+                "risk_level": risk_level,
+                "state_risk": state_risk,
+                "min_score": min_score,
+                "max_dti": max_dti,
+            },
+        )
+
+
+def downgrade() -> None:
+    conn = op.get_bind()
+
+    conn.execute(sa.text("DELETE FROM risk_level_rules"))
+    conn.execute(sa.text("DELETE FROM stability_config"))
+    conn.execute(sa.text("DELETE FROM bureau_score_config"))
+    conn.execute(sa.text("DELETE FROM unserviceable_pins"))
+    conn.execute(sa.text("DELETE FROM city_rules"))
+    conn.execute(sa.text("DELETE FROM state_risk"))

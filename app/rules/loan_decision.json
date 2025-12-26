@@ -1,0 +1,465 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "content": {
+        "schema": ""
+      },
+      "id": "82f3275d-c3a6-40db-bdf6-3a2e333d299b",
+      "name": "Request",
+      "position": {
+        "x": -285,
+        "y": 140
+      }
+    },
+    {
+      "type": "expressionNode",
+      "content": {
+        "expressions": [
+          {
+            "id": "6c4269fb-90a9-4137-81c9-d8948082a78a",
+            "key": "debt_ratio",
+            "value": "existing_debt / monthly_income"
+          },
+          {
+            "id": "0a20717a-3a62-4d25-be63-e57c37764698",
+            "key": "max_eligible",
+            "value": "monthly_income * city_rule_multiplier"
+          }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      },
+      "id": "1a33c049-c571-4caa-8842-ac39db12d532",
+      "name": "DerivedFields",
+      "position": {
+        "x": -15,
+        "y": 140
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "content": {
+        "hitPolicy": "first",
+        "rules": [
+          {
+            "_id": "34d766b4-4bfa-460d-9d56-1af3cf46d1c7",
+            "_description": "High-risk state",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "== \"HIGH\"",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Manual review required\""
+          },
+          {
+            "_id": "52c1ae0e-f1ca-45a1-80aa-43db358d34e9",
+            "_description": "IncomeBelowThreshold",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "< city_rule_min_income",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Income below threshold\""
+          },
+          {
+            "_id": "9275ea47-4a6a-46ce-9a3d-c4e8ab5939d8",
+            "_description": "LoanExceedsEligibility",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "> max_eligible",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Loan exceeds eligibility\""
+          },
+          {
+            "_id": "50aa3002-6ffd-4fbe-bf23-280cae776129",
+            "_description": "HighDebtRatio",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "> stability_max_dti_ratio",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"High debt ratio\""
+          },
+          {
+            "_id": "a5bcca08-5493-4003-bbd2-c4676a5a8811",
+            "_description": "UnserviceablePin",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "false",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Unserviceable pin\""
+          },
+          {
+            "_id": "62250197-caf3-457a-b074-90a4b7aeccfc",
+            "_description": "Disaster affected area",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "true",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Disaster affected area\""
+          },
+          {
+            "_id": "f3f2d079-ac6e-467a-a691-2d7a9ce3ec3e",
+            "_description": "Employment too short",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "< 12",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Employment period too short\""
+          },
+          {
+            "_id": "7ea64d8f-2c7a-46f8-a9d4-1cfb727ada50",
+            "_description": "Address duration too short",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "<= 6",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Address duration too short\""
+          },
+          {
+            "_id": "b384f14a-970b-4e5c-9856-0f7e0906c7ce",
+            "_description": "Work/Residence mismatch",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "false",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Work/Residence mismatch\""
+          },
+          {
+            "_id": "9be9a684-f172-4c5d-b318-1025bd055364",
+            "_description": "Rural guarantor logic",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "== Rural",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "true",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Guarantor required\""
+          },
+          {
+            "_id": "10c95eb3-aaad-4f2a-af44-b1a9bff8a873",
+            "_description": "Default approval",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "true",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Approved\""
+          },
+          {
+            "_id": "ed0b6f4e-3a52-4ba0-96ef-ab39f4ed5cb6",
+            "_description": "LowCreditScore",
+            "3fd6b08c-53c9-4474-8f50-15db49ea47b2": "",
+            "325d3892-dec8-4333-b188-de2df427b012": "",
+            "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
+            "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "< stability_min_credit_score",
+            "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "",
+            "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
+            "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
+            "01317888-f93c-4c35-826a-e4d87d07bf79": "",
+            "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
+            "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
+            "33a905af-660d-4bd6-9351-5a7f08302505": "false",
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Low credit score\""
+          }
+        ],
+        "inputs": [
+          {
+            "id": "3fd6b08c-53c9-4474-8f50-15db49ea47b2",
+            "name": "monthly_income",
+            "field": "monthly_income"
+          },
+          {
+            "id": "325d3892-dec8-4333-b188-de2df427b012",
+            "name": "loan_requested",
+            "field": "loan_requested"
+          },
+          {
+            "id": "9b24047f-dd29-4ba0-a489-4d7d736387de",
+            "name": "debt_ratio",
+            "field": "debt_ratio"
+          },
+          {
+            "id": "914cf83e-8ad5-4d3f-9318-50a75aaa781e",
+            "name": "bureau_score",
+            "field": "bureau_score"
+          },
+          {
+            "id": "4fbc303b-03c2-4fac-886c-49b42f8f82f3",
+            "name": "pin_serviceable",
+            "field": "pin_serviceable"
+          },
+          {
+            "id": "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea",
+            "name": "state_risk",
+            "field": "state_risk"
+          },
+          {
+            "id": "569e1e0a-fd85-40a0-a411-b154e1d6e1a4",
+            "name": "disaster_affected_area",
+            "field": "disaster_affected_area"
+          },
+          {
+            "id": "7bc9d94e-b929-4c2c-8dad-353e1c42785f",
+            "name": "employment_duration_months",
+            "field": "employment_duration_months"
+          },
+          {
+            "id": "01317888-f93c-4c35-826a-e4d87d07bf79",
+            "name": "address_duration_months",
+            "field": "address_duration_months"
+          },
+          {
+            "id": "13a1dbce-804b-4b9a-86ad-158be9b6f0e3",
+            "name": "work_location_matches_residence",
+            "field": "work_location_matches_residence"
+          },
+          {
+            "id": "d9121a13-1e05-4bda-95b2-e45acda02d23",
+            "name": "city_tier",
+            "field": "city_tier"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "33a905af-660d-4bd6-9351-5a7f08302505",
+            "name": "approved",
+            "field": "approved"
+          },
+          {
+            "id": "b6fabf59-37ab-414d-b101-3e000321cba0",
+            "name": "reason",
+            "field": "reason"
+          }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single",
+        "passThorough": false
+      },
+      "id": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
+      "name": "LoanPolicy",
+      "position": {
+        "x": 265,
+        "y": 140
+      }
+    },
+    {
+      "type": "outputNode",
+      "content": {
+        "schema": ""
+      },
+      "id": "0ee53cc1-e6c1-44d0-864b-9768cb6797ff",
+      "name": "Response",
+      "position": {
+        "x": 810,
+        "y": 140
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "content": {
+        "hitPolicy": "first",
+        "rules": [
+          {
+            "_id": "44beea1d-32d9-4b87-a2b8-436d997ba017",
+            "_description": "high risk state",
+            "3040eaa9-7bf5-4207-8159-08de258590ba": "",
+            "7d51eee2-790a-453c-bdfd-4a8983be9af8": "\"HIGH\"",
+            "ae7eb0d0-9a03-4a46-8e2d-f92ce7ed9645": "",
+            "476b5df5-6e23-4e46-84cf-bb4e74474279": "\"PENDING\"",
+            "a9df8182-40c8-4f70-838f-cfb7d805171a": "true",
+            "a83cd856-bb01-401d-a2f6-4a644c31c32f": "0",
+            "676cfb8b-3a78-46e6-8e3f-66859d06c211": "\"High Risk State\""
+          },
+          {
+            "_id": "5cc0b471-5123-4a9a-9ca6-c0a07da406fb",
+            "_description": "Not Approved",
+            "3040eaa9-7bf5-4207-8159-08de258590ba": "false",
+            "7d51eee2-790a-453c-bdfd-4a8983be9af8": "",
+            "ae7eb0d0-9a03-4a46-8e2d-f92ce7ed9645": "",
+            "476b5df5-6e23-4e46-84cf-bb4e74474279": "\"REJECTED\"",
+            "a9df8182-40c8-4f70-838f-cfb7d805171a": "false",
+            "a83cd856-bb01-401d-a2f6-4a644c31c32f": "0",
+            "676cfb8b-3a78-46e6-8e3f-66859d06c211": ""
+          },
+          {
+            "_id": "ceca1474-85e0-42dd-92fa-a83119a2031f",
+            "_description": "Fully approved",
+            "3040eaa9-7bf5-4207-8159-08de258590ba": "true",
+            "7d51eee2-790a-453c-bdfd-4a8983be9af8": "\"LOW\"",
+            "ae7eb0d0-9a03-4a46-8e2d-f92ce7ed9645": "",
+            "476b5df5-6e23-4e46-84cf-bb4e74474279": "\"APPROVED\"",
+            "a9df8182-40c8-4f70-838f-cfb7d805171a": "false",
+            "a83cd856-bb01-401d-a2f6-4a644c31c32f": "loan_requested",
+            "676cfb8b-3a78-46e6-8e3f-66859d06c211": "\"Approved\""
+          }
+        ],
+        "inputs": [
+          {
+            "id": "3040eaa9-7bf5-4207-8159-08de258590ba",
+            "name": "approved",
+            "field": "approved"
+          },
+          {
+            "id": "7d51eee2-790a-453c-bdfd-4a8983be9af8",
+            "name": "state_risk",
+            "field": "state_risk"
+          },
+          {
+            "id": "ae7eb0d0-9a03-4a46-8e2d-f92ce7ed9645",
+            "name": "loan_requested",
+            "field": "loan_requested"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "476b5df5-6e23-4e46-84cf-bb4e74474279",
+            "name": "decision_label",
+            "field": "decision_label"
+          },
+          {
+            "id": "a9df8182-40c8-4f70-838f-cfb7d805171a",
+            "name": "manual_review",
+            "field": "manual_review"
+          },
+          {
+            "id": "a83cd856-bb01-401d-a2f6-4a644c31c32f",
+            "name": "approved_amount",
+            "field": "approved_amount"
+          },
+          {
+            "id": "676cfb8b-3a78-46e6-8e3f-66859d06c211",
+            "name": "reason",
+            "field": "reason"
+          }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single",
+        "passThorough": false
+      },
+      "id": "765d6d92-c3df-4c67-9aa0-847a13f0bc67",
+      "name": "FinalDecision",
+      "position": {
+        "x": 530,
+        "y": 140
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "6951dfa1-5921-4b76-8ca4-71e311608373",
+      "sourceId": "82f3275d-c3a6-40db-bdf6-3a2e333d299b",
+      "targetId": "1a33c049-c571-4caa-8842-ac39db12d532",
+      "type": "edge"
+    },
+    {
+      "id": "fe9ab632-6cf8-4e09-ac83-c2fc2988ec47",
+      "sourceId": "1a33c049-c571-4caa-8842-ac39db12d532",
+      "targetId": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
+      "type": "edge"
+    },
+    {
+      "id": "df55e351-30b0-40ee-a3ba-4965e2c9143e",
+      "sourceId": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
+      "type": "edge",
+      "targetId": "765d6d92-c3df-4c67-9aa0-847a13f0bc67"
+    },
+    {
+      "id": "226f6716-cbf9-4826-96c3-b678c20eaa63",
+      "sourceId": "765d6d92-c3df-4c67-9aa0-847a13f0bc67",
+      "type": "edge",
+      "targetId": "0ee53cc1-e6c1-44d0-864b-9768cb6797ff"
+    }
+  ]
+}
