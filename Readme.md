@@ -1,62 +1,80 @@
 # Loan Evaluation API
 
-This project provides a **Location Based Loan Evaluation API** built with FastAPI. It evaluates loan requests based on multiple rules (state risk, city tier, credit score, etc.) using a GoRules engine and database-driven configuration.
+This project provides a **Location-Aware Loan Evaluation API** built with **FastAPI**.
+It evaluates loan applications using **database-driven configurations**, **credit scoring logic**, and a **GoRules (Zen) decision engine** for final approval decisions.
+
+The system is designed to be **scalable, modular, and production-ready**, following clean service-layer architecture.
 
 ---
 
-## Features
+## Key Features
 
-- Evaluate loan applications with dynamic rules.
-- Credit score calculation based on employment, debt ratio, and age.
-- Risk assessment for loan approval.
-- Database-driven configuration and rules.
-- Post-approval actions: notify applicant, generate repayment schedule, create loan record.
+* Location-based loan evaluation (state risk, city tier, PIN serviceability)
+* Credit score calculation using configurable bureau rules
+* Risk assessment based on state risk, credit score, and debt ratio
+* GoRules (Zen Engine) for declarative loan decision logic
+* Database-driven rules & configurations
+* Post-approval actions:
+
+  * Applicant notification
+  * Loan record creation
+  * Repayment schedule generation
+* Fully managed schema & data migrations using Alembic
 
 ---
 
-## Project Structure
+## Updated Project Structure
 
 ```
-
 .
-├── api                  # FastAPI endpoints
+├── api/                     # FastAPI route handlers (thin controllers)
 │   └── loan.py
-├── core                 # Database configuration
+├── core/                    # Core infrastructure (DB, settings)
 │   └── database.py
-├── models               # SQLAlchemy models
-│   └── loan_models.py
-├── rules                # Business rules
-│   ├── loan_decision.json
-│   └── loan_rules.py
-├── schemas              # Pydantic request/response schemas
+├── models/                  # SQLAlchemy ORM models
+│   └── *.py
+├── schemas/                 # Pydantic request/response schemas
 │   └── loan.py
-├── services             # Service layer for actions & Zen engine
-│   ├── los_post_actions.py
-│   └── zen_engine.py
-└── alembic              # Alembic migrations
+├── services/                # Business logic & engines
+│   ├── credit/              # Credit scoring & risk logic
+│   │   ├── loaders.py       # DB-backed rule loaders
+│   │   ├── scoring.py       # Credit score calculation
+│   │   ├── risk.py          # Risk level determination
+│   │   └── __init__.py
+│   ├── los_post_actions.py  # Post-approval workflows
+│   └── zen_engine.py        # GoRules (Zen) engine integration
+├── rules/                   # Declarative rule definitions
+│   └── loan_decision.json   # GoRules decision rules
+└── alembic/                 # Alembic migrations (schema + seed data)
+```
 
-````
+### Design Notes
+
+* `api/` contains **only orchestration logic**
+* `services/` contains **all executable business logic**
+* `rules/` is reserved for **declarative rule definitions (JSON / DSL)**
+* Alembic migrations are **committed to Git** (never gitignored)
 
 ---
 
 ## Installation
 
-1. **Clone the repository**
+### 1. Clone the repository
 
 ```bash
 git clone <repo-url>
 cd <repo-folder>
-````
+```
 
-2. **Create a virtual environment**
+### 2. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+source venv/bin/activate   # Linux / Mac
+venv\Scripts\activate      # Windows
 ```
 
-3. **Install dependencies**
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -66,51 +84,53 @@ pip install -r requirements.txt
 
 ## Database Setup
 
-This project uses **PostgreSQL** as the database.
+This project uses **PostgreSQL**.
 
-1. Create a new PostgreSQL database:
+### 1. Create the database
 
 ```sql
 CREATE DATABASE loan_db;
 ```
 
-2. Update the database URL in `core/database.py` (or `.env` if using environment variables):
+### 2. Configure database URL
 
-```python
-SQLALCHEMY_DATABASE_URL = "postgresql://username:password@localhost:5432/loan_db"
+Set the database URL via environment variables (recommended):
+
+```bash
+export DATABASE_URL="postgresql://username:password@localhost:5432/loan_db"
 ```
+
+Or configure it directly in `core/database.py`.
 
 ---
 
 ## Alembic Migrations
 
-1. **Initialize Alembic (if starting fresh)**
+Alembic is used for **both schema management and rule data seeding**.
+
+### Apply migrations
 
 ```bash
-alembic init alembic
-```
-
-2. **Create initial tables**
-
-```bash
-alembic revision --autogenerate -m "Initial tables"
 alembic upgrade head
 ```
 
-3. **Seed initial data**
+### Create a new migration
 
 ```bash
-alembic revision -m "Seed rule data"  # Add your data insertion code
-alembic upgrade head
+alembic revision --autogenerate -m "your message"
 ```
 
-* This will populate tables:
+### Tables managed via migrations
 
-  * `state_risk`
-  * `city_rules`
-  * `unserviceable_pins`
-  * `bureau_score_config`
-  * `risk_level_rules`
+* `state_risk`
+* `city_rules`
+* `unserviceable_pins`
+* `bureau_score_config`
+* `risk_level_rules`
+
+> ⚠️ **Important:**
+> The `alembic/` folder **must be committed** to Git.
+> Migration scripts are part of the application’s source of truth.
 
 ---
 
@@ -120,8 +140,8 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-* API will be available at `http://127.0.0.1:8000`
-* Swagger docs: `http://127.0.0.1:8000/docs`
+* API base URL: `http://127.0.0.1:8000`
+* Swagger UI: `http://127.0.0.1:8000/docs`
 
 ---
 
@@ -129,7 +149,7 @@ uvicorn app.main:app --reload
 
 ### POST `/loan/evaluate`
 
-**Request Body:**
+#### Request Body
 
 ```json
 {
@@ -147,7 +167,7 @@ uvicorn app.main:app --reload
 }
 ```
 
-**Response:**
+#### Response
 
 ```json
 {
@@ -166,10 +186,13 @@ uvicorn app.main:app --reload
 
 ---
 
-## Notes
+## Processing Flow (High Level)
 
-* All rules and configurations are now **DB-driven**, including credit score parameters and risk rules.
-* GoRules engine evaluates JSON-based rules.
-* Alembic is used for database schema migrations and data seeding.
-
----
+1. API receives loan request
+2. DB-backed rules and configs are loaded
+3. Credit score is calculated
+4. Input is prepared for GoRules engine
+5. GoRules evaluates approval decision
+6. Risk level is determined
+7. Post-approval workflows are triggered (if applicable)
+8. Final response is returned

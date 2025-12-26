@@ -5,13 +5,14 @@ import logging
 
 from app.schemas.loan import LoanRequest, LoanResponse
 from app.core.database import get_db
-from app.rules.loan_rules import (
+from app.services.credit import (
     load_rules,
     load_bureau_config,
     load_stability_config,
     calculate_credit_score,
     get_risk_level,
 )
+
 from app.services.los_post_actions import (
     notify_applicant,
     create_loan_record,

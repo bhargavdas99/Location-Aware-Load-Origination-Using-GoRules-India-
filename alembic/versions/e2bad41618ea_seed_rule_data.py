@@ -24,25 +24,34 @@ def upgrade() -> None:
     # STATE RISK
     # -------------------------------------------------
     state_risks = [
-        ("Maharashtra", "LOW"),
-        ("Karnataka", "LOW"),
-        ("Tamil Nadu", "LOW"),
-        ("Delhi", "LOW"),
-        ("Gujarat", "LOW"),
-        ("Telangana", "LOW"),
-        ("Haryana", "LOW"),
-        ("Goa", "LOW"),
-        ("Kerala", "MEDIUM"),
         ("Andhra Pradesh", "MEDIUM"),
-        ("Punjab", "MEDIUM"),
-        ("West Bengal", "MEDIUM"),
-        ("Rajasthan", "MEDIUM"),
-        ("Madhya Pradesh", "MEDIUM"),
+        ("Arunachal Pradesh", "LOW"),
+        ("Assam", "MEDIUM"),
         ("Bihar", "HIGH"),
-        ("Uttar Pradesh", "HIGH"),
-        ("Jharkhand", "HIGH"),
         ("Chhattisgarh", "HIGH"),
+        ("Goa", "LOW"),
+        ("Gujarat", "LOW"),
+        ("Haryana", "LOW"),
+        ("Himachal Pradesh", "LOW"),
+        ("Jharkhand", "HIGH"),
+        ("Karnataka", "LOW"),
+        ("Kerala", "MEDIUM"),
+        ("Madhya Pradesh", "MEDIUM"),
+        ("Maharashtra", "LOW"),
+        ("Manipur", "MEDIUM"),
+        ("Meghalaya", "LOW"),
+        ("Mizoram", "LOW"),
+        ("Nagaland", "MEDIUM"),
         ("Odisha", "HIGH"),
+        ("Punjab", "MEDIUM"),
+        ("Rajasthan", "MEDIUM"),
+        ("Sikkim", "LOW"),
+        ("Tamil Nadu", "LOW"),
+        ("Telangana", "LOW"),
+        ("Tripura", "LOW"),
+        ("Uttar Pradesh", "HIGH"),
+        ("Uttarakhand", "LOW"),
+        ("West Bengal", "MEDIUM"),
     ]
 
     for state, risk in state_risks:
@@ -163,7 +172,6 @@ def downgrade() -> None:
     conn = op.get_bind()
 
     conn.execute(sa.text("DELETE FROM risk_level_rules"))
-    conn.execute(sa.text("DELETE FROM stability_config"))
     conn.execute(sa.text("DELETE FROM bureau_score_config"))
     conn.execute(sa.text("DELETE FROM unserviceable_pins"))
     conn.execute(sa.text("DELETE FROM city_rules"))
