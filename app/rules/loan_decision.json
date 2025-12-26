@@ -128,7 +128,7 @@
             "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
             "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
             "33a905af-660d-4bd6-9351-5a7f08302505": "false",
-            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Unserviceable pin\""
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Unserviceable PIN\""
           },
           {
             "_id": "62250197-caf3-457a-b074-90a4b7aeccfc",
@@ -230,7 +230,7 @@
             "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
             "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
             "33a905af-660d-4bd6-9351-5a7f08302505": "true",
-            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Approved\""
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Eligible for loan\""
           },
           {
             "_id": "ed0b6f4e-3a52-4ba0-96ef-ab39f4ed5cb6",
@@ -380,7 +380,7 @@
             "476b5df5-6e23-4e46-84cf-bb4e74474279": "\"APPROVED\"",
             "a9df8182-40c8-4f70-838f-cfb7d805171a": "false",
             "a83cd856-bb01-401d-a2f6-4a644c31c32f": "loan_requested",
-            "676cfb8b-3a78-46e6-8e3f-66859d06c211": "\"Approved\""
+            "676cfb8b-3a78-46e6-8e3f-66859d06c211": "\"Eligible for loan\""
           }
         ],
         "inputs": [

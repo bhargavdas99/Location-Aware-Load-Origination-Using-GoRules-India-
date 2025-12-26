@@ -111,38 +111,6 @@ def upgrade() -> None:
         )
 
     # -------------------------------------------------
-    # BUREAU SCORE CONFIG (single row)
-    # -------------------------------------------------
-    conn.execute(
-        sa.text(
-            """
-            INSERT INTO bureau_score_config (
-                base_score,
-                debt_low_threshold, debt_low_bonus,
-                debt_medium_threshold, debt_medium_bonus,
-                debt_high_threshold, debt_high_penalty,
-                emp_long_months, emp_long_bonus,
-                emp_medium_months, emp_medium_bonus,
-                emp_short_months, emp_short_penalty,
-                age_min, age_max, age_bonus,
-                score_min, score_max
-            )
-            VALUES (
-                600,
-                0.2, 150,
-                0.4, 100,
-                0.6, 100,
-                48, 100,
-                24, 50,
-                12, 50,
-                30, 50, 50,
-                300, 900
-            )
-            """
-        )
-    )
-
-    # -------------------------------------------------
     # RISK LEVEL RULES
     # -------------------------------------------------
     risk_level_rules = [
@@ -172,7 +140,6 @@ def downgrade() -> None:
     conn = op.get_bind()
 
     conn.execute(sa.text("DELETE FROM risk_level_rules"))
-    conn.execute(sa.text("DELETE FROM bureau_score_config"))
     conn.execute(sa.text("DELETE FROM unserviceable_pins"))
     conn.execute(sa.text("DELETE FROM city_rules"))
     conn.execute(sa.text("DELETE FROM state_risk"))

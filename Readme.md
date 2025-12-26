@@ -27,25 +27,35 @@ The system is designed to be **scalable, modular, and production-ready**, follow
 
 ```
 .
-├── api/                     # FastAPI route handlers (thin controllers)
+├── api/                         # FastAPI route handlers (thin controllers)
 │   └── loan.py
-├── core/                    # Core infrastructure (DB, settings)
+├── core/                        # Core infrastructure (DB, settings)
 │   └── database.py
-├── models/                  # SQLAlchemy ORM models
-│   └── *.py
-├── schemas/                 # Pydantic request/response schemas
+├── models/                      # SQLAlchemy ORM models (DB schema only)
+│   ├── city_rules.py
+│   ├── risk_level.py
+│   ├── state_risk.py
+│   └── unserviceable_pin.py
+├── repositories/                # Data access layer (DB / JSON abstraction)
+│   ├── city_rule_repo.py
+│   ├── risk_level_repo.py
+│   ├── state_risk_repo.py
+│   └── unserviceable_pin_repo.py
+├── schemas/                     # Pydantic request/response schemas
 │   └── loan.py
-├── services/                # Business logic & engines
-│   ├── credit/              # Credit scoring & risk logic
-│   │   ├── loaders.py       # DB-backed rule loaders
-│   │   ├── scoring.py       # Credit score calculation
-│   │   ├── risk.py          # Risk level determination
+├── services/                    # Business logic & orchestration
+│   ├── credit/
+│   │   ├── loaders.py           # Repository-based rule loaders
+│   │   ├── scoring.py           # Credit score calculation
+│   │   ├── risk.py              # Risk level determination
+│   │   ├── loan_evaluator.py    # End-to-end evaluation flow
 │   │   └── __init__.py
-│   ├── los_post_actions.py  # Post-approval workflows
-│   └── zen_engine.py        # GoRules (Zen) engine integration
-├── rules/                   # Declarative rule definitions
-│   └── loan_decision.json   # GoRules decision rules
-└── alembic/                 # Alembic migrations (schema + seed data)
+│   ├── los_post_actions.py      # Post-approval workflows
+│   └── zen_engine.py            # GoRules (Zen) engine integration
+├── rules/                       # Declarative rule & config files
+│   ├── loan_decision.json       # GoRules decision rules
+│   └── bureau_score_config.json # Bureau scoring configuration (JSON-based)
+└── alembic/                     # Alembic migrations (schema + seed data)
 ```
 
 ### Design Notes

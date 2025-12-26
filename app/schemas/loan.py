@@ -17,7 +17,7 @@ class LoanRequest(BaseModel):
 
 class LoanResponse(BaseModel):
     decision: str
-    reason: str
+    message: str
     manual_review_required: bool
     guarantor_required: bool
     credit_score: int
