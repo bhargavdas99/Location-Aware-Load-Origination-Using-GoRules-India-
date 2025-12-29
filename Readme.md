@@ -107,7 +107,7 @@ CREATE DATABASE loan_db;
 Set the database URL via environment variables (recommended):
 
 ```bash
-export DATABASE_URL="postgresql://username:password@localhost:5432/loan_db"
+export DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/loan_db"
 ```
 
 Or configure it directly in `core/database.py`.
