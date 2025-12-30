@@ -26,14 +26,14 @@
             "9b24047f-dd29-4ba0-a489-4d7d736387de": "",
             "914cf83e-8ad5-4d3f-9318-50a75aaa781e": "",
             "4fbc303b-03c2-4fac-886c-49b42f8f82f3": "",
-            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "== \"HIGH\"",
+            "15e66b3d-fe54-4c46-b83c-6d8c9b2589ea": "\"HIGH\"",
             "569e1e0a-fd85-40a0-a411-b154e1d6e1a4": "",
             "7bc9d94e-b929-4c2c-8dad-353e1c42785f": "",
             "01317888-f93c-4c35-826a-e4d87d07bf79": "",
             "13a1dbce-804b-4b9a-86ad-158be9b6f0e3": "",
             "d9121a13-1e05-4bda-95b2-e45acda02d23": "",
             "33a905af-660d-4bd6-9351-5a7f08302505": "false",
-            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"Manual review required\""
+            "b6fabf59-37ab-414d-b101-3e000321cba0": "\"High Risk State\""
           },
           {
             "_id": "52c1ae0e-f1ca-45a1-80aa-43db358d34e9",
@@ -295,7 +295,8 @@
         "passThrough": true,
         "inputField": null,
         "outputPath": null,
-        "executionMode": "single"
+        "executionMode": "single",
+        "passThorough": false
       },
       "id": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
       "name": "LoanPolicy",
@@ -321,17 +322,6 @@
       "content": {
         "hitPolicy": "first",
         "rules": [
-          {
-            "_id": "44beea1d-32d9-4b87-a2b8-436d997ba017",
-            "_description": "high risk state",
-            "3040eaa9-7bf5-4207-8159-08de258590ba": "",
-            "7d51eee2-790a-453c-bdfd-4a8983be9af8": "\"HIGH\"",
-            "ae7eb0d0-9a03-4a46-8e2d-f92ce7ed9645": "",
-            "476b5df5-6e23-4e46-84cf-bb4e74474279": "\"PENDING\"",
-            "a9df8182-40c8-4f70-838f-cfb7d805171a": "true",
-            "a83cd856-bb01-401d-a2f6-4a644c31c32f": "0",
-            "676cfb8b-3a78-46e6-8e3f-66859d06c211": "\"High Risk State\""
-          },
           {
             "_id": "5cc0b471-5123-4a9a-9ca6-c0a07da406fb",
             "_description": "Not Approved",
@@ -397,7 +387,8 @@
         "passThrough": true,
         "inputField": null,
         "outputPath": null,
-        "executionMode": "single"
+        "executionMode": "single",
+        "passThorough": false
       },
       "id": "765d6d92-c3df-4c67-9aa0-847a13f0bc67",
       "name": "FinalDecision",
