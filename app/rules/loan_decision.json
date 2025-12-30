@@ -14,33 +14,6 @@
       }
     },
     {
-      "type": "expressionNode",
-      "content": {
-        "expressions": [
-          {
-            "id": "6c4269fb-90a9-4137-81c9-d8948082a78a",
-            "key": "debt_ratio",
-            "value": "existing_debt / monthly_income"
-          },
-          {
-            "id": "0a20717a-3a62-4d25-be63-e57c37764698",
-            "key": "max_eligible",
-            "value": "monthly_income * city_rule_multiplier"
-          }
-        ],
-        "passThrough": true,
-        "inputField": null,
-        "outputPath": null,
-        "executionMode": "single"
-      },
-      "id": "1a33c049-c571-4caa-8842-ac39db12d532",
-      "name": "DerivedFields",
-      "position": {
-        "x": -15,
-        "y": 140
-      }
-    },
-    {
       "type": "decisionTableNode",
       "content": {
         "hitPolicy": "first",
@@ -322,13 +295,12 @@
         "passThrough": true,
         "inputField": null,
         "outputPath": null,
-        "executionMode": "single",
-        "passThorough": false
+        "executionMode": "single"
       },
       "id": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
       "name": "LoanPolicy",
       "position": {
-        "x": 265,
+        "x": 85,
         "y": 140
       }
     },
@@ -340,7 +312,7 @@
       "id": "0ee53cc1-e6c1-44d0-864b-9768cb6797ff",
       "name": "Response",
       "position": {
-        "x": 810,
+        "x": 775,
         "y": 140
       }
     },
@@ -425,41 +397,34 @@
         "passThrough": true,
         "inputField": null,
         "outputPath": null,
-        "executionMode": "single",
-        "passThorough": false
+        "executionMode": "single"
       },
       "id": "765d6d92-c3df-4c67-9aa0-847a13f0bc67",
       "name": "FinalDecision",
       "position": {
-        "x": 530,
+        "x": 420,
         "y": 140
       }
     }
   ],
   "edges": [
     {
-      "id": "6951dfa1-5921-4b76-8ca4-71e311608373",
-      "sourceId": "82f3275d-c3a6-40db-bdf6-3a2e333d299b",
-      "targetId": "1a33c049-c571-4caa-8842-ac39db12d532",
-      "type": "edge"
-    },
-    {
-      "id": "fe9ab632-6cf8-4e09-ac83-c2fc2988ec47",
-      "sourceId": "1a33c049-c571-4caa-8842-ac39db12d532",
-      "targetId": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
-      "type": "edge"
-    },
-    {
       "id": "df55e351-30b0-40ee-a3ba-4965e2c9143e",
       "sourceId": "02e7ff78-5422-4d9c-b33f-966938ab8e54",
-      "type": "edge",
-      "targetId": "765d6d92-c3df-4c67-9aa0-847a13f0bc67"
+      "targetId": "765d6d92-c3df-4c67-9aa0-847a13f0bc67",
+      "type": "edge"
     },
     {
       "id": "226f6716-cbf9-4826-96c3-b678c20eaa63",
       "sourceId": "765d6d92-c3df-4c67-9aa0-847a13f0bc67",
+      "targetId": "0ee53cc1-e6c1-44d0-864b-9768cb6797ff",
+      "type": "edge"
+    },
+    {
+      "id": "cc1b05bd-fe3d-4466-a011-44dc323109ef",
+      "sourceId": "82f3275d-c3a6-40db-bdf6-3a2e333d299b",
       "type": "edge",
-      "targetId": "0ee53cc1-e6c1-44d0-864b-9768cb6797ff"
+      "targetId": "02e7ff78-5422-4d9c-b33f-966938ab8e54"
     }
   ]
 }

@@ -64,6 +64,7 @@ async def evaluate_loan(request, db: AsyncSession):
         "city_rule_multiplier": city_rule["multiplier"],
         "city_rule_rate": city_rule["rate"],
         "debt_ratio": debt_ratio,
+        "max_eligible": max_eligible,
         "bureau_score": bureau_score,
         "state_risk": state_risk,
         "pin_serviceable": request.pin_code not in bad_pins,
