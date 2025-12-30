@@ -13,64 +13,52 @@ logger = logging.getLogger(__name__)
 
 async def load_rules(session: AsyncSession):
     """
-    Async load state risk, city rules, and unserviceable pins from DB via repositories
+    Async load state risk, city rules, and unserviceable pins from DB.
+    Exceptions are not caught here so the caller (API) can handle the failure.
     """
-    try:
-        state_risk_repo = StateRiskRepository(session)
-        city_rule_repo = CityRuleRepository(session)
-        unserviceable_pin_repo = UnserviceablePinRepository(session)
+    state_risk_repo = StateRiskRepository(session)
+    city_rule_repo = CityRuleRepository(session)
+    unserviceable_pin_repo = UnserviceablePinRepository(session)
 
-        state_risk_list = await state_risk_repo.get_all()
-        city_rule_list = await city_rule_repo.get_all()
-        unserviceable_pin_list = await unserviceable_pin_repo.get_all()
+    # If these fail, they will raise an exception to the router
+    state_risk_list = await state_risk_repo.get_all()
+    city_rule_list = await city_rule_repo.get_all()
+    unserviceable_pin_list = await unserviceable_pin_repo.get_all()
 
-        state_risk = {r.state: r.risk_level for r in state_risk_list}
+    state_risk = {r.state: r.risk_level for r in state_risk_list}
 
-        city_rules = {
-            r.tier: {
-                "min_income": r.min_income,
-                "multiplier": r.multiplier,
-                "rate": r.rate,
-            }
-            for r in city_rule_list
+    city_rules = {
+        r.tier: {
+            "min_income": r.min_income,
+            "multiplier": r.multiplier,
+            "rate": r.rate,
         }
+        for r in city_rule_list
+    }
 
-        unserviceable_pins = {r.pin_code for r in unserviceable_pin_list}
+    unserviceable_pins = {r.pin_code for r in unserviceable_pin_list}
 
-        return state_risk, city_rules, unserviceable_pins
-    except Exception as e:
-        logger.error("Error loading rules from DB: %s", e)
-        return {}, {}, set()
+    return state_risk, city_rules, unserviceable_pins
 
 
 async def load_stability_config(session: AsyncSession):
     """
-    Async load risk level rules from DB via repository
+    Async load risk level rules from DB.
     """
-    try:
-        risk_repo = RiskLevelRuleRepository(session)
-        return await risk_repo.get_all()
-    except Exception as e:
-        logger.error("Error loading risk rules from DB: %s", e)
-        return []
+    risk_repo = RiskLevelRuleRepository(session)
+    return await risk_repo.get_all()
 
 
 def load_bureau_config_from_json() -> dict:
     """
-    JSON file loader remains sync
+    JSON file loader. Raises FileNotFoundError or JSONDecodeError if config is invalid.
     """
-    try:
-        config_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "rules"
-            / "bureau_score_config.json"
-        )
-        with open(config_path, "r") as f:
-            cfg = json.load(f)
-        return cfg
-    except FileNotFoundError as e:
-        logger.error("Bureau config file not found: %s", e)
-        return {}
-    except json.JSONDecodeError as e:
-        logger.error("Error parsing bureau config JSON: %s", e)
-        return {}
+    config_path = (
+        Path(__file__).resolve().parent.parent.parent
+        / "rules"
+        / "bureau_score_config.json"
+    )
+
+    # We use a context manager; if file is missing, the error bubbles up
+    with open(config_path, "r") as f:
+        return json.load(f)
