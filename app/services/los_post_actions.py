@@ -14,7 +14,7 @@ def notify_applicant(application, approved_amount, interest_rate):
     )
 
 
-def create_loan_record(db, application, approved_amount, interest_rate):
+def create_loan_record(application, approved_amount, interest_rate):
     loan_id = f"LN-{application.pin_code}-{approved_amount}"
     logger.info(
         f"[CORE BANKING] Loan created | LoanID: {loan_id} | Amount: {approved_amount} | Rate: {interest_rate}"

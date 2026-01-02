@@ -23,7 +23,7 @@ The system is designed to be **scalable, modular, and production-ready**, follow
 
 ---
 
-## Updated Project Structure
+## Project Structure
 
 ```
 .
@@ -31,31 +31,15 @@ The system is designed to be **scalable, modular, and production-ready**, follow
 │   └── loan.py
 ├── core/                        # Core infrastructure (DB, settings)
 │   └── database.py
-├── models/                      # SQLAlchemy ORM models (DB schema only)
-│   ├── city_rules.py
-│   ├── risk_level.py
-│   ├── state_risk.py
-│   └── unserviceable_pin.py
-├── repositories/                # Data access layer (DB / JSON abstraction)
-│   ├── city_rule_repo.py
-│   ├── risk_level_repo.py
-│   ├── state_risk_repo.py
-│   └── unserviceable_pin_repo.py
 ├── schemas/                     # Pydantic request/response schemas
 │   └── loan.py
 ├── services/                    # Business logic & orchestration
-│   ├── credit/
-│   │   ├── loaders.py           # Repository-based rule loaders
-│   │   ├── scoring.py           # Credit score calculation
-│   │   ├── risk.py              # Risk level determination
-│   │   ├── loan_evaluator.py    # End-to-end evaluation flow
-│   │   └── __init__.py
+|   ├── loan_evaluator.py        # End-to-end evaluation flow
 │   ├── los_post_actions.py      # Post-approval workflows
 │   └── zen_engine.py            # GoRules (Zen) engine integration
 ├── rules/                       # Declarative rule & config files
 │   ├── loan_decision.json       # GoRules decision rules
 │   └── bureau_score_config.json # Bureau scoring configuration (JSON-based)
-└── alembic/                     # Alembic migrations (schema + seed data)
 ```
 
 ### Design Notes
@@ -89,58 +73,6 @@ venv\Scripts\activate      # Windows
 ```bash
 pip install -r requirements.txt
 ```
-
----
-
-## Database Setup
-
-This project uses **PostgreSQL**.
-
-### 1. Create the database
-
-```sql
-CREATE DATABASE loan_db;
-```
-
-### 2. Configure database URL
-
-Set the database URL via environment variables (recommended):
-
-```bash
-export DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/loan_db"
-```
-
-Or configure it directly in `core/database.py`.
-
----
-
-## Alembic Migrations
-
-Alembic is used for **both schema management and rule data seeding**.
-
-### Apply migrations
-
-```bash
-alembic upgrade head
-```
-
-### Create a new migration
-
-```bash
-alembic revision --autogenerate -m "your message"
-```
-
-### Tables managed via migrations
-
-* `state_risk`
-* `city_rules`
-* `unserviceable_pins`
-* `bureau_score_config`
-* `risk_level_rules`
-
-> ⚠️ **Important:**
-> The `alembic/` folder **must be committed** to Git.
-> Migration scripts are part of the application’s source of truth.
 
 ---
 
