@@ -36,10 +36,10 @@ async def evaluate_loan(request, repo: LoanRepository):
         manual_review = res.get("manual_review", False)
 
         # Handle the logic for REVIEW vs APPROVED vs REJECTED
-        if decision == "APPROVED" and not manual_review:
-            sm.to_approve()
-        elif decision == "REVIEW" or manual_review is True:
+        if manual_review is True:
             sm.to_review()
+        elif decision == "APPROVED" and not manual_review:
+            sm.to_approve()
         else:
             sm.to_reject()
 

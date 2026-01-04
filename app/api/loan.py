@@ -42,9 +42,9 @@ async def get_loan_status(loan_id: str, db: AsyncSession = Depends(get_async_db)
 async def approve_manual(loan_id: str, db: AsyncSession = Depends(get_async_db)):
     repo = LoanRepository(db)
 
-    updated_loan, error = await approve_loan_manual_action(loan_id, db, repo)
+    updated_loan, error = await approve_loan_manual_action(loan_id, repo)
 
-    if error == "Loan not found":
+    if not updated_loan:
         raise HTTPException(status_code=404, detail=error)
     if error:
         raise HTTPException(status_code=400, detail=f"Workflow Error: {error}")
