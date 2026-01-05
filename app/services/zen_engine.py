@@ -1,14 +1,16 @@
 import zen
 
-
-def gorules_loader(key: str) -> str:
-    with open(key, "r") as f:
-        return f.read()
-
-
 class LoanDecisionEngine:
     def __init__(self):
-        self.engine = zen.ZenEngine({"loader": gorules_loader})
+        # No loader needed since we feed JSON directly
+        self.engine = zen.ZenEngine()
 
-    def evaluate(self, rules_path: str, input_data: dict) -> dict:
-        return self.engine.evaluate(rules_path, input_data)
+    def evaluate(self, rules_dict: dict, input_data: dict) -> dict:
+        """
+        Takes the rules as a dictionary (from DB) and 
+        evaluates them against the input data.
+        """
+        # We use create_decision to wrap the dictionary so Zen understands 
+        # it is the content, not a filename string.
+        decision = self.engine.create_decision(rules_dict)
+        return decision.evaluate(input_data)

@@ -1,6 +1,7 @@
 import uuid
-from sqlalchemy import Column, String, Float, Integer, JSON, Boolean
+from sqlalchemy import Column, String, Float, Integer, JSON, Boolean, DateTime
 from app.core.database import Base
+from sqlalchemy.sql import func
 
 
 def generate_uuid():
@@ -12,9 +13,11 @@ class LoanRecord(Base):
 
     # default=generate_uuid ensures a new id/primary_key is created for every new record
     id = Column(String, primary_key=True, default=generate_uuid, index=True)
-
-    # State Machine Column
+    pan_number = Column(String, index=True)
     status = Column(String, default="submitted")
+    bureau_score = Column(Integer, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # --- Request Fields (Mirroring LoanRequest) ---
     age = Column(Integer)
@@ -23,6 +26,7 @@ class LoanRecord(Base):
     existing_debt = Column(Float)
     loan_requested = Column(Float)
     state = Column(String)
+    city = Column(String)
     city_tier = Column(String)
     pin_code = Column(String(6))
     disaster_affected_area = Column(Boolean)

@@ -22,8 +22,12 @@ class LoanRepository:
         await self.session.refresh(loan)
         return loan
 
-    async def get_loan(self, loan_id: int) -> LoanRecord:
+    async def get_active_loan_by_pan(self, pan: str) -> LoanRecord:
+        # Find a loan for this PAN that is NOT finished (not approved/rejected)
         result = await self.session.execute(
-            select(LoanRecord).where(LoanRecord.id == loan_id)
+            select(LoanRecord).where(
+                LoanRecord.pan_number == pan,
+                LoanRecord.status.notin_(["approved", "rejected"]),
+            )
         )
         return result.scalars().first()
